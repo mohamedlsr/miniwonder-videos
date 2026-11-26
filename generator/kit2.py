@@ -467,14 +467,15 @@ def outro2(lines, bg_fn, parade=(), extras=None):
                  sfx=lambda S: [("whoosh", 0.0), ("fanfare", 0.5), ("sparkle", 0.7), ("jingle", S.cue(len(S.cues) - 1))])
 
 
-def music_for(scenes):
+def music_for(scenes, style=0):
+    """style 0-3 changes key and melody order so consecutive videos don't sound identical."""
     def fn(total, scs):
         quiet = []
         for s in scs:
             q = getattr(s, "quiet_fn", None)
             if q:
                 quiet.append(q(s))
-        return music2.track(total, 0, quiet)
+        return music2.track(total, 0, quiet, style=style)
     return fn
 
 

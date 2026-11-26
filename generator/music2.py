@@ -93,8 +93,14 @@ MEL_B = [
 ]
 
 
-def track(dur, transpose=0, quiet=()):
+STYLES = {0: (0, 0), 1: (2, 1), 2: (5, 0), 3: (-3, 1)}  # style -> (transpose, melody-section swap)
+
+
+def track(dur, transpose=0, quiet=(), style=None):
     """quiet: list of (t0,t1) where drums/lead drop for suspense (quiz countdowns)."""
+    swap = 0
+    if style is not None:
+        transpose, swap = STYLES[style % len(STYLES)]
     n = int(dur * AR) + AR * 4
     drums = np.zeros(n, np.float32)
     bass = np.zeros(n, np.float32)
@@ -116,7 +122,7 @@ def track(dur, transpose=0, quiet=()):
     while t < dur + BEAT * 4:
         root, ch = PROG[bar % 4]
         root += transpose
-        section = (bar // 8) % 2  # 0: with lead, 1: lighter
+        section = ((bar // 8) + swap) % 2  # 0: with lead, 1: lighter
         q = is_quiet(t)
         for b in range(4):
             tb = t + b * BEAT

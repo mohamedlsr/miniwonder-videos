@@ -1,65 +1,355 @@
 {
   "published": {
     "videos": [
-      {"date": "2026-11-26", "slug": "savane", "title": "Les animaux de la savane", "youtube_id": "5JW5HKtCFb8", "script": "generator/ep1b.py"}
+      {
+        "date": "2026-11-26",
+        "slug": "savane",
+        "title": "Les animaux de la savane",
+        "youtube_id": "5JW5HKtCFb8",
+        "script": "generator/ep1b.py",
+        "playlist": "animaux",
+        "format": "exploration",
+        "duration_s": 202
+      }
     ],
     "shorts": [
-      {"date": "2026-11-26", "slug": "girafe", "title": "3 faits incroyables sur la girafe", "youtube_id": "DQVnjFHoctE", "script": "generator/short_girafe.py"}
+      {
+        "date": "2026-11-26",
+        "slug": "girafe",
+        "title": "3 faits incroyables sur la girafe",
+        "youtube_id": "DQVnjFHoctE",
+        "script": "generator/short_girafe.py",
+        "playlist": "animaux",
+        "format": "3-faits"
+      }
     ]
   },
   "ideas": {
     "videos": [
-      {"slug": "eau", "title": "Le voyage de la goutte d'eau (le cycle de l'eau)", "note": "Contenu et dessins déjà écrits dans generator/ep2.py (ancien style) : le porter vers kit2 comme ep1b.py."},
-      {"slug": "plante", "title": "Comment pousse une plante ?", "note": "Contenu et dessins déjà écrits dans generator/ep3.py (ancien style) : le porter vers kit2 comme ep1b.py."},
-      {"slug": "systeme-solaire", "title": "Le système solaire : les planètes"},
-      {"slug": "dinosaures", "title": "Les dinosaures"},
-      {"slug": "ocean", "title": "Les animaux de l'océan"},
-      {"slug": "cinq-sens", "title": "Nos cinq sens"},
-      {"slug": "saisons", "title": "Les quatre saisons"},
-      {"slug": "insectes", "title": "Le monde des insectes"},
-      {"slug": "volcans", "title": "Les volcans"},
-      {"slug": "banquise", "title": "Les animaux de la banquise et des pôles"},
-      {"slug": "abeilles", "title": "Les abeilles et le miel"},
-      {"slug": "lune", "title": "La Lune et ses phases"},
-      {"slug": "foret", "title": "Les animaux de la forêt"},
-      {"slug": "squelette", "title": "Notre squelette et nos muscles"},
-      {"slug": "arc-en-ciel", "title": "Comment se forme un arc-en-ciel ?"},
-      {"slug": "recyclage", "title": "Le recyclage : trier pour la planète"},
-      {"slug": "ferme", "title": "Les animaux de la ferme et leurs petits"},
-      {"slug": "dents", "title": "Nos dents : comment en prendre soin"},
-      {"slug": "meteo", "title": "La météo : pluie, vent, orage et neige"},
-      {"slug": "metamorphose", "title": "De la chenille au papillon"},
-      {"slug": "desert", "title": "Les animaux du désert"},
-      {"slug": "coeur", "title": "Le cœur et le sang"},
-      {"slug": "aimants", "title": "Les aimants, comment ça marche ?"},
-      {"slug": "continents", "title": "Les continents et les océans du monde"}
+      {
+        "slug": "eau",
+        "title": "Le voyage de la goutte d'eau (le cycle de l'eau)",
+        "note": "Contenu et dessins déjà écrits dans generator/ep2.py (ancien style) : le porter vers kit2 comme ep1b.py.",
+        "playlist": "nature",
+        "format": "aventure"
+      },
+      {
+        "slug": "systeme-solaire",
+        "title": "Le système solaire : les planètes",
+        "playlist": "espace",
+        "format": "exploration"
+      },
+      {
+        "slug": "dinosaures",
+        "title": "Les dinosaures",
+        "playlist": "animaux",
+        "format": "grand-quiz"
+      },
+      {
+        "slug": "cinq-sens",
+        "title": "Nos cinq sens",
+        "playlist": "corps",
+        "format": "pourquoi"
+      },
+      {
+        "slug": "aimants",
+        "title": "Les aimants, comment ça marche ?",
+        "playlist": "sciences",
+        "format": "experience"
+      },
+      {
+        "slug": "ocean",
+        "title": "Les animaux de l'océan",
+        "playlist": "animaux",
+        "format": "exploration"
+      },
+      {
+        "slug": "lune",
+        "title": "La Lune et ses phases",
+        "playlist": "espace",
+        "format": "pourquoi"
+      },
+      {
+        "slug": "plante",
+        "title": "Comment pousse une plante ?",
+        "note": "Contenu et dessins déjà écrits dans generator/ep3.py (ancien style) : le porter vers kit2 comme ep1b.py.",
+        "playlist": "nature",
+        "format": "experience"
+      },
+      {
+        "slug": "squelette",
+        "title": "Notre squelette et nos muscles",
+        "playlist": "corps",
+        "format": "exploration"
+      },
+      {
+        "slug": "banquise",
+        "title": "Les animaux de la banquise et des pôles",
+        "playlist": "animaux",
+        "format": "aventure"
+      },
+      {
+        "slug": "volcans",
+        "title": "Les volcans",
+        "playlist": "nature",
+        "format": "pourquoi"
+      },
+      {
+        "slug": "foret",
+        "title": "Les animaux de la forêt",
+        "playlist": "animaux",
+        "format": "grand-quiz"
+      },
+      {
+        "slug": "dents",
+        "title": "Nos dents : comment en prendre soin",
+        "playlist": "corps",
+        "format": "pourquoi"
+      },
+      {
+        "slug": "arc-en-ciel",
+        "title": "Comment se forme un arc-en-ciel ?",
+        "playlist": "sciences",
+        "format": "experience"
+      },
+      {
+        "slug": "insectes",
+        "title": "Le monde des insectes",
+        "playlist": "animaux",
+        "format": "exploration"
+      },
+      {
+        "slug": "meteo",
+        "title": "La météo : pluie, vent, orage et neige",
+        "playlist": "espace",
+        "format": "exploration"
+      },
+      {
+        "slug": "recyclage",
+        "title": "Le recyclage : trier pour la planète",
+        "playlist": "nature",
+        "format": "aventure"
+      },
+      {
+        "slug": "coeur",
+        "title": "Le cœur et le sang",
+        "playlist": "corps",
+        "format": "pourquoi"
+      },
+      {
+        "slug": "ferme",
+        "title": "Les animaux de la ferme et leurs petits",
+        "playlist": "animaux",
+        "format": "grand-quiz"
+      },
+      {
+        "slug": "saisons",
+        "title": "Les quatre saisons",
+        "playlist": "nature",
+        "format": "aventure"
+      },
+      {
+        "slug": "abeilles",
+        "title": "Les abeilles et le miel",
+        "playlist": "animaux",
+        "format": "exploration"
+      },
+      {
+        "slug": "continents",
+        "title": "Les continents et les océans du monde",
+        "playlist": "nature",
+        "format": "grand-quiz"
+      },
+      {
+        "slug": "metamorphose",
+        "title": "De la chenille au papillon",
+        "playlist": "animaux",
+        "format": "aventure"
+      },
+      {
+        "slug": "desert",
+        "title": "Les animaux du désert",
+        "playlist": "animaux",
+        "format": "exploration"
+      }
     ],
     "shorts": [
-      {"slug": "elephant", "title": "3 faits incroyables sur l'éléphant"},
-      {"slug": "lion", "title": "3 faits incroyables sur le lion"},
-      {"slug": "zebre", "title": "3 faits incroyables sur le zèbre"},
-      {"slug": "nuages", "title": "3 faits sur les nuages"},
-      {"slug": "abeille", "title": "3 faits sur l'abeille"},
-      {"slug": "pieuvre", "title": "3 faits sur la pieuvre"},
-      {"slug": "dauphin", "title": "3 faits sur le dauphin"},
-      {"slug": "manchot", "title": "3 faits sur le manchot empereur"},
-      {"slug": "lune", "title": "3 faits sur la Lune"},
-      {"slug": "soleil", "title": "3 faits sur le Soleil"},
-      {"slug": "escargot", "title": "3 faits sur l'escargot"},
-      {"slug": "papillon", "title": "3 faits sur le papillon"},
-      {"slug": "tortue", "title": "3 faits sur la tortue"},
-      {"slug": "hibou", "title": "3 faits sur le hibou"},
-      {"slug": "requin", "title": "3 faits sur le requin-baleine"},
-      {"slug": "fourmi", "title": "3 faits sur la fourmi"},
-      {"slug": "kangourou", "title": "3 faits sur le kangourou"},
-      {"slug": "coeur", "title": "3 faits sur ton cœur"},
-      {"slug": "dents", "title": "3 faits sur tes dents"},
-      {"slug": "volcan", "title": "3 faits sur les volcans"},
-      {"slug": "arc-en-ciel", "title": "3 faits sur l'arc-en-ciel"},
-      {"slug": "dinosaure", "title": "3 faits sur le tyrannosaure"},
-      {"slug": "chameau", "title": "3 faits sur le chameau"},
-      {"slug": "panda", "title": "3 faits sur le panda géant"},
-      {"slug": "graine", "title": "3 faits sur les graines"}
+      {
+        "slug": "elephant",
+        "title": "3 faits incroyables sur l'éléphant",
+        "format": "3-faits",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "lion",
+        "title": "3 faits incroyables sur le lion",
+        "format": "vrai-ou-faux",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "zebre",
+        "title": "3 faits incroyables sur le zèbre",
+        "format": "devinette",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "nuages",
+        "title": "3 faits sur les nuages",
+        "format": "3-faits",
+        "playlist": "espace"
+      },
+      {
+        "slug": "abeille",
+        "title": "3 faits sur l'abeille",
+        "format": "quiz-eclair",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "pieuvre",
+        "title": "3 faits sur la pieuvre",
+        "format": "3-faits",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "dauphin",
+        "title": "3 faits sur le dauphin",
+        "format": "vrai-ou-faux",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "manchot",
+        "title": "3 faits sur le manchot empereur",
+        "format": "devinette",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "lune",
+        "title": "3 faits sur la Lune",
+        "format": "3-faits",
+        "playlist": "espace"
+      },
+      {
+        "slug": "soleil",
+        "title": "3 faits sur le Soleil",
+        "format": "quiz-eclair",
+        "playlist": "espace"
+      },
+      {
+        "slug": "escargot",
+        "title": "3 faits sur l'escargot",
+        "format": "3-faits",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "papillon",
+        "title": "3 faits sur le papillon",
+        "format": "vrai-ou-faux",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "tortue",
+        "title": "3 faits sur la tortue",
+        "format": "devinette",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "hibou",
+        "title": "3 faits sur le hibou",
+        "format": "3-faits",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "requin",
+        "title": "3 faits sur le requin-baleine",
+        "format": "quiz-eclair",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "fourmi",
+        "title": "3 faits sur la fourmi",
+        "format": "3-faits",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "kangourou",
+        "title": "3 faits sur le kangourou",
+        "format": "vrai-ou-faux",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "coeur",
+        "title": "3 faits sur ton cœur",
+        "format": "devinette",
+        "playlist": "corps"
+      },
+      {
+        "slug": "dents",
+        "title": "3 faits sur tes dents",
+        "format": "3-faits",
+        "playlist": "corps"
+      },
+      {
+        "slug": "volcan",
+        "title": "3 faits sur les volcans",
+        "format": "quiz-eclair",
+        "playlist": "nature"
+      },
+      {
+        "slug": "arc-en-ciel",
+        "title": "3 faits sur l'arc-en-ciel",
+        "format": "3-faits",
+        "playlist": "nature"
+      },
+      {
+        "slug": "dinosaure",
+        "title": "3 faits sur le tyrannosaure",
+        "format": "vrai-ou-faux",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "chameau",
+        "title": "3 faits sur le chameau",
+        "format": "devinette",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "panda",
+        "title": "3 faits sur le panda géant",
+        "format": "3-faits",
+        "playlist": "animaux"
+      },
+      {
+        "slug": "graine",
+        "title": "3 faits sur les graines",
+        "format": "quiz-eclair",
+        "playlist": "nature"
+      }
     ]
+  },
+  "playlists": {
+    "animaux": {
+      "id": "PLKqh4aZqSKUQ",
+      "title": "Les animaux pour enfants 🦁 | MiniWonder"
+    },
+    "espace": {
+      "id": "PLBZNhXEtyKH8",
+      "title": "L'espace et le ciel 🚀 | MiniWonder"
+    },
+    "corps": {
+      "id": "PLOJspRdS19bM",
+      "title": "Le corps humain 🫀 | MiniWonder"
+    },
+    "nature": {
+      "id": "PLRM673tmqi28",
+      "title": "La nature et la planète 🌍 | MiniWonder"
+    },
+    "sciences": {
+      "id": "PLJd2JELekFgE",
+      "title": "Sciences et expériences 🔬 | MiniWonder"
+    },
+    "shorts": {
+      "id": "PLLy1uWCsVkio",
+      "title": "3 faits incroyables ⚡ Shorts | MiniWonder"
+    }
   }
 }

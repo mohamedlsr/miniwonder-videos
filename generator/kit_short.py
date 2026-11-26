@@ -113,6 +113,6 @@ def short_quiz(question, options, good, lines, bg_fn=None):
     return sc
 
 
-def render_short(name, scenes, outdir):
-    return render_video(name, scenes, outdir, music_fn=music_for(scenes), sfx_fn=music2.sfx,
+def render_short(name, scenes, outdir, style=0):
+    return render_video(name, scenes, outdir, music_fn=music_for(scenes, style), sfx_fn=music2.sfx,
                         music_gain=0.5, duck_depth=0.6)

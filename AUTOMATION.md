@@ -1,7 +1,7 @@
 # MiniWonder : mode d'emploi de la publication automatique
 
 Ce fichier est lu par les sessions planifiées de Claude. Il décrit comment créer **et publier** une vidéo
-(16:9, 3 à 4 min) ou un Short (9:16, 35 à 55 s) sur la chaîne YouTube MiniWonder (@miniwonderofficiel),
+(16:9, **6 à 8 min**) ou un Short (9:16, 35 à 55 s) sur la chaîne YouTube MiniWonder (@miniwonderofficiel),
 sans intervention humaine. Le propriétaire a demandé une publication **directe en public**.
 
 ## 0. Préparer la session
@@ -17,10 +17,15 @@ sans intervention humaine. Le propriétaire a demandé une publication **directe
 
 Si une de ces étapes échoue : **ne rien publier**, expliquer le problème dans le message final.
 
+**Lire aussi `STRATEGY.md` en entier** : formats, règles anti-répétition, référencement, playlists.
+
 ## 1. Choisir le sujet
 
 - Lire `topics.json`. Prendre la **première idée** de `ideas.videos` (ou `ideas.shorts`) dont le `slug`
   n'est pas déjà dans `published`. Ne jamais republier un sujet.
+- Chaque idée a un `format` et une `playlist`. Vérifier que le format **et** la playlist diffèrent de ceux de la
+  dernière vidéo publiée (`published`, dernière entrée) ; sinon prendre l'idée suivante qui respecte cette règle.
+- Style musical : `style = len(published.videos) % 4` (ou `len(published.shorts) % 4` pour un Short).
 - Quand il reste moins de 5 idées, en ajouter de nouvelles : sciences, nature, animaux, corps humain,
   espace, écologie, pour les 6-8 ans. Varier les thèmes d'une semaine à l'autre.
 - Pour un Short, on peut aussi reprendre un fait marquant d'une vidéo déjà publiée.
@@ -35,16 +40,34 @@ Si une de ces étapes échoue : **ne rien publier**, expliquer le problème dans
   conseils médicaux, sujets politiques ou religieux, comparaisons qui se moquent de quelqu'un.
   Une expérience à faire à la maison se fait toujours « avec un adulte » et sans danger (pas de feu, pas de produits chimiques).
 - Écrire les nombres en lettres dans la narration (« cinq mètres et demi »), en chiffres à l'écran (« 5,5 m »).
-- Titre de vidéo : `<Sujet> pour enfants <emoji> | <3-4 mots-clés> + QUIZ | MiniWonder` (100 caractères max).
-- Titre de Short : `3 faits incroyables sur <sujet> <emoji> #Shorts`.
+- Titre de vidéo : commencer par la recherche des parents (« Les planètes pour enfants », « Pourquoi … ? »), puis emoji,
+  2 ou 3 mots-clés, « | MiniWonder ». Moins de 70 caractères si possible, 100 maximum.
 
-### Vidéo longue : structure (modèle : `generator/ep1b.py`)
-`intro2` → 5 à 7 scènes `topic2` (une notion chacune, 2 ou 3 `chip_items`, un `fact` « Le savais-tu ? » pour la plupart)
-→ une scène « RÉCAPITULONS » → 3 × `quiz2` → `outro2`. Durée visée : 3 à 4 min.
+### Vidéo longue : structure selon le `format` (voir le tableau de STRATEGY.md)
+Briques disponibles dans `generator/kit2.py` : `intro2`, `topic2` (scène avec acteur, étiquettes `chip_items`,
+encadré `fact`), `quiz2`, `outro2`, plus `dancer`, `hop_in`, `mini2`, `wavy_text`, `pop_label`, `sparkle_burst`,
+`confetti_burst`, `sun2`, `birds`, `butterflies`, `drift_clouds`, `camera`, `star_wipe`. Modèle complet : `generator/ep1b.py`.
+- `exploration` : `intro2` → 7 à 10 `topic2` → « RÉCAPITULONS » → 3 `quiz2` → `outro2`.
+- `aventure` : `intro2` (Mini présente le compagnon) → 8 à 11 scènes `topic2` qui racontent le voyage dans l'ordre
+  (le compagnon parle aussi : ses répliques sont des lignes de narration annoncées par Mini, ex. « Plic s'écrie : … »),
+  décors qui changent au fil de l'histoire → récap → 3 `quiz2` → `outro2`.
+- `pourquoi` : `intro2` → 6 à 8 scènes `topic2` dont le titre est la question (« POURQUOI LE CIEL EST BLEU ? ») et dont
+  la première ligne pose la question, puis la réponse en 3 ou 4 phrases → 3 `quiz2` → `outro2`.
+- `grand-quiz` : `intro2` → 10 à 12 `quiz2` (numérotés 1/12 … : adapter le libellé `QUIZ n/N` dans une copie de `quiz2`
+  si besoin), chaque réponse suivie d'une courte scène `topic2` qui explique (15 à 25 s) → `outro2` (« Combien as-tu
+  de bonnes réponses ? »).
+- `experience` : `intro2` → pour chaque expérience (2 ou 3) : matériel, étapes (« avec un adulte »), résultat,
+  explication → récap → 3 `quiz2` → `outro2`. Expériences sans feu, sans produit dangereux, sans objet coupant.
+**Durée visée : 6 à 8 minutes.** Si le rendu fait moins de 5 min 30, ajouter des notions ou des questions avant de publier.
+Une accroche dans les 10 premières secondes et une annonce à mi-parcours (« Et tout à l'heure… ») sont obligatoires.
 
-### Short : structure (modèle : `generator/short_girafe.py`)
-`short_scene(first=True)` titre → 3 × `short_scene(badge=1..3, card=...)` → `short_quiz` → `short_scene(last=True)`.
-Durée visée : 35 à 55 s (maximum 58 s). Lancer avec `MW_VERTICAL=1`.
+### Short : structure selon le `format` (modèle : `generator/short_girafe.py`, briques de `generator/kit_short.py`)
+- `3-faits` : `short_scene(first=True)` titre → 3 × `short_scene(badge=1..3, card=...)` → `short_quiz` → `short_scene(last=True)`.
+- `vrai-ou-faux` : titre → 3 affirmations, chacune avec la réponse « VRAI ! » ou « FAUX ! » révélée (`short_scene` + `card`) → fin.
+- `devinette` : « Qui suis-je ? » → 3 indices (personnage caché en silhouette ou flou, `card` = indice) → révélation → fin.
+- `quiz-eclair` : titre → 2 `short_quiz` → fin.
+Durée visée : 35 à 55 s (maximum 58 s). Lancer avec `MW_VERTICAL=1`. Titre :
+`<Format> : <sujet> <emoji> #Shorts` (ex. « Vrai ou faux : le manchot 🐧 #Shorts », « 3 faits incroyables sur la tortue 🐢 #Shorts »).
 
 ## 3. Dessiner
 
@@ -63,8 +86,10 @@ Durée visée : 35 à 55 s (maximum 58 s). Lancer avec `MW_VERTICAL=1`.
 ## 4. Rendre
 
 - Créer le script dans `generator/` : `epNN_<slug>.py` (vidéos, NN = numéro suivant) ou `short_<slug>.py`.
-- Sortie dans `/home/claude/mw/out/<slug>/`. Vidéo : `render_video(..., music_fn=music_for(SCENES), sfx_fn=music2.sfx, music_gain=0.5, duck_depth=0.6)`
-  comme `ep1b.py`. Short : `render_short(...)`.
+- Sortie dans `/home/claude/mw/out/<slug>/`. Vidéo : `render_video(..., music_fn=music_for(SCENES, style), sfx_fn=music2.sfx, music_gain=0.5, duck_depth=0.6)`
+  comme `ep1b.py`. Short : `render_short(name, SCENES, outdir, style)`.
+- Une vidéo de 7 min se rend en 15 à 25 min : lancer le rendu en arrière-plan (`nohup … &`) et attendre la fin
+  avec une boucle `until grep -q FINAL log; do sleep 15; done` (délai de commande de 10 min, répéter si besoin).
 - Contrôler le résultat : `ffprobe` (durée, 1920×1080 ou 1080×1920, piste audio présente),
   extraire 3 ou 4 images avec ffmpeg et les regarder.
 - Vidéo longue : créer la miniature avec `kit2.make_thumbnail(path, bg, titre_court, [(sprite, x, y_bas, échelle), ...])`, puis la regarder.
@@ -83,7 +108,9 @@ Durée visée : 35 à 55 s (maximum 58 s). Lancer avec `MW_VERTICAL=1`.
    - **Ne pas** passer `thumbnail` dans cet appel.
 3. Vidéo longue uniquement : `action="upload_video_thumbnail"`, `tool_name="youtube_update_video_thumbnail"`,
    `video_id=<id renvoyé>`, `thumbnail=<lien de la miniature>`.
-4. Si l'envoi échoue : vérifier d'abord avec `video_in_playlist` (`playlist_id="UUyRxdZXVvYooFiPXmKkrJVg"`)
+4. Ajouter la vidéo à sa playlist : `action="add_video_to_playlist"`, `playlist_id` = `topics.json → playlists[<playlist>].id`.
+   Pour un Short : l'ajouter à la playlist `shorts` **et** à celle de son thème.
+5. Si l'envoi échoue : vérifier d'abord avec `video_in_playlist` (`playlist_id="UUyRxdZXVvYooFiPXmKkrJVg"`)
    que la vidéo n'est pas déjà en ligne avant de réessayer **une seule fois**. Ne jamais créer de doublon.
 
 **Description** (vidéo) : 2 phrases d'accroche, la liste des notions avec emojis, la phrase sur le quiz, les
@@ -94,7 +121,8 @@ chapitres `00:00 Introduction`… calculés à partir des durées de scènes aff
 
 ## 6. Ranger
 
-- Ajouter l'entrée dans `topics.json` → `published` (date, slug, titre, youtube_id, script) et retirer l'idée utilisée.
+- Ajouter l'entrée dans `topics.json` → `published` (date, slug, titre, youtube_id, script, format, playlist, duration_s)
+  et retirer l'idée utilisée.
 - `git add generator/<script>.py topics.json` (+ tout fichier de dessin modifié). **Ne jamais commiter de .mp4.**
 - Commit en français, puis `git -c push.negotiate=true push origin HEAD:main`.
 - Message final : titre, lien `https://www.youtube.com/watch?v=<id>`, durée, et tout problème rencontré.
