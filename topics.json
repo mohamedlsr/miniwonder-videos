@@ -1,0 +1,65 @@
+{
+  "published": {
+    "videos": [
+      {"date": "2026-11-26", "slug": "savane", "title": "Les animaux de la savane", "youtube_id": "5JW5HKtCFb8", "script": "generator/ep1b.py"}
+    ],
+    "shorts": [
+      {"date": "2026-11-26", "slug": "girafe", "title": "3 faits incroyables sur la girafe", "youtube_id": "DQVnjFHoctE", "script": "generator/short_girafe.py"}
+    ]
+  },
+  "ideas": {
+    "videos": [
+      {"slug": "eau", "title": "Le voyage de la goutte d'eau (le cycle de l'eau)", "note": "Contenu et dessins déjà écrits dans generator/ep2.py (ancien style) : le porter vers kit2 comme ep1b.py."},
+      {"slug": "plante", "title": "Comment pousse une plante ?", "note": "Contenu et dessins déjà écrits dans generator/ep3.py (ancien style) : le porter vers kit2 comme ep1b.py."},
+      {"slug": "systeme-solaire", "title": "Le système solaire : les planètes"},
+      {"slug": "dinosaures", "title": "Les dinosaures"},
+      {"slug": "ocean", "title": "Les animaux de l'océan"},
+      {"slug": "cinq-sens", "title": "Nos cinq sens"},
+      {"slug": "saisons", "title": "Les quatre saisons"},
+      {"slug": "insectes", "title": "Le monde des insectes"},
+      {"slug": "volcans", "title": "Les volcans"},
+      {"slug": "banquise", "title": "Les animaux de la banquise et des pôles"},
+      {"slug": "abeilles", "title": "Les abeilles et le miel"},
+      {"slug": "lune", "title": "La Lune et ses phases"},
+      {"slug": "foret", "title": "Les animaux de la forêt"},
+      {"slug": "squelette", "title": "Notre squelette et nos muscles"},
+      {"slug": "arc-en-ciel", "title": "Comment se forme un arc-en-ciel ?"},
+      {"slug": "recyclage", "title": "Le recyclage : trier pour la planète"},
+      {"slug": "ferme", "title": "Les animaux de la ferme et leurs petits"},
+      {"slug": "dents", "title": "Nos dents : comment en prendre soin"},
+      {"slug": "meteo", "title": "La météo : pluie, vent, orage et neige"},
+      {"slug": "metamorphose", "title": "De la chenille au papillon"},
+      {"slug": "desert", "title": "Les animaux du désert"},
+      {"slug": "coeur", "title": "Le cœur et le sang"},
+      {"slug": "aimants", "title": "Les aimants, comment ça marche ?"},
+      {"slug": "continents", "title": "Les continents et les océans du monde"}
+    ],
+    "shorts": [
+      {"slug": "elephant", "title": "3 faits incroyables sur l'éléphant"},
+      {"slug": "lion", "title": "3 faits incroyables sur le lion"},
+      {"slug": "zebre", "title": "3 faits incroyables sur le zèbre"},
+      {"slug": "nuages", "title": "3 faits sur les nuages"},
+      {"slug": "abeille", "title": "3 faits sur l'abeille"},
+      {"slug": "pieuvre", "title": "3 faits sur la pieuvre"},
+      {"slug": "dauphin", "title": "3 faits sur le dauphin"},
+      {"slug": "manchot", "title": "3 faits sur le manchot empereur"},
+      {"slug": "lune", "title": "3 faits sur la Lune"},
+      {"slug": "soleil", "title": "3 faits sur le Soleil"},
+      {"slug": "escargot", "title": "3 faits sur l'escargot"},
+      {"slug": "papillon", "title": "3 faits sur le papillon"},
+      {"slug": "tortue", "title": "3 faits sur la tortue"},
+      {"slug": "hibou", "title": "3 faits sur le hibou"},
+      {"slug": "requin", "title": "3 faits sur le requin-baleine"},
+      {"slug": "fourmi", "title": "3 faits sur la fourmi"},
+      {"slug": "kangourou", "title": "3 faits sur le kangourou"},
+      {"slug": "coeur", "title": "3 faits sur ton cœur"},
+      {"slug": "dents", "title": "3 faits sur tes dents"},
+      {"slug": "volcan", "title": "3 faits sur les volcans"},
+      {"slug": "arc-en-ciel", "title": "3 faits sur l'arc-en-ciel"},
+      {"slug": "dinosaure", "title": "3 faits sur le tyrannosaure"},
+      {"slug": "chameau", "title": "3 faits sur le chameau"},
+      {"slug": "panda", "title": "3 faits sur le panda géant"},
+      {"slug": "graine", "title": "3 faits sur les graines"}
+    ]
+  }
+}

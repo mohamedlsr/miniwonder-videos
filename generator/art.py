@@ -4,7 +4,8 @@ from functools import lru_cache
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
 
-W, H = 1920, 1080
+import os as _os
+W, H = (1080, 1920) if _os.environ.get("MW_VERTICAL") else (1920, 1080)
 SS = 3
 FONT_DIR = "/home/claude/fonts/"
 

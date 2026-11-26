@@ -476,3 +476,16 @@ def music_for(scenes):
                 quiet.append(q(s))
         return music2.track(total, 0, quiet)
     return fn
+
+
+def make_thumbnail(path, bg_img, title, sprites, title_ol="#e8590c"):
+    """16:9 YouTube thumbnail (1280x720 JPEG, < 2 MB). sprites: list of (sprite, x, y_bottom, scale)."""
+    F = Frame(bg_img)
+    for sp, x, y, sc in sprites:
+        F.put(sp, x, y, sc=sc, anchor="b")
+    F.put(art.star(360), 1640, 820, rot=-8)
+    F.put(big_title(title, 150, "#ffffff", title_ol, 1250), 720, 310)
+    F.put(label("MiniWonder", 64, "#ffd43b", "#1b3a6b"), 230, 80)
+    F.put(label("+ QUIZ", 70, "#ff6b81"), 1700, 120, rot=8)
+    F.img.convert("RGB").resize((1280, 720), Image.LANCZOS).save(path, quality=90)
+    return path
