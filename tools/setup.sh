@@ -10,6 +10,7 @@ if [ ! -f /home/claude/voice/fr-siwis-medium.onnx ]; then
   curl -sSL -o /tmp/voice.tgz https://github.com/rhasspy/piper/releases/download/v0.0.2/voice-fr-siwis-medium.tar.gz
   tar xzf /tmp/voice.tgz -C /home/claude/voice
 fi
+if [ -d /home/claude/mw ] && [ ! -L /home/claude/mw ]; then mv /home/claude/mw "/home/claude/mw.old.$(date +%s)"; fi
 ln -sfn "$REPO/generator" /home/claude/mw
 mkdir -p /home/claude/mw/out /home/claude/mw/cache_tts
 python3 -c "import sys; sys.path.insert(0,'/home/claude/mw'); import tts; a=tts.say('Bonjour !'); print('voix OK', len(a))"
