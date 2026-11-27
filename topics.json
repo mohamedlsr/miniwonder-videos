@@ -31,6 +31,16 @@
         "script": "generator/short_girafe.py",
         "playlist": "animaux",
         "format": "3-faits"
+      },
+      {
+        "date": "2026-11-27",
+        "slug": "nuages",
+        "title": "Vrai ou faux : les nuages ☁️ #Shorts",
+        "youtube_id": "ZieqcJQCziI",
+        "script": "generator/short_nuages.py",
+        "playlist": "espace",
+        "format": "vrai-ou-faux",
+        "duration_s": 54
       }
     ]
   },
@@ -194,12 +204,6 @@
         "title": "3 faits incroyables sur le zèbre",
         "format": "devinette",
         "playlist": "animaux"
-      },
-      {
-        "slug": "nuages",
-        "title": "3 faits sur les nuages",
-        "format": "3-faits",
-        "playlist": "espace"
       },
       {
         "slug": "abeille",
