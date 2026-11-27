@@ -137,8 +137,18 @@ class StoryScene(Scene):
         return F
 
 
+USE3D = True
+
+
+def _sprite(who, mouth, blink, mood, cheer=False):
+    if USE3D and B.has3d(who):
+        return B.char3d(who, mouth, blink, mood, cheer), B.SCALE3D
+    return B.char_sprite(who, mouth, blink, mood), None
+
+
 def draw_char(F, S, t, who, x, y, flip=False, sc=None):
-    sc = sc or B.SIZES[who]
+    sp0, s3 = _sprite(who, "smile", False, "happy")
+    sc = sc or (s3 if s3 else B.SIZES[who])
     # entrance: (t0, from_x, duration)
     if who in S.enter:
         t0, x0, d = S.enter[who]
@@ -148,10 +158,14 @@ def draw_char(F, S, t, who, x, y, flip=False, sc=None):
         if k < 1:
             e = ease_in_out(k)
             xx = x0 + (x - x0) * e
+            if s3:
+                F.put(B.shadow(int(sp0.width * sc * 0.9)), xx, y + 8)
             jump = abs(math.sin(math.pi * 4 * k)) * 50 * sc
-            F.put(B.char_sprite(who, "smile", False, S.mood_of(who, t)), xx, y - jump, sc, anchor="b",
+            F.put(_sprite(who, "smile", False, S.mood_of(who, t))[0], xx, y - jump, sc, anchor="b",
                   flip=flip if x > x0 else not flip)
             return
+    if s3:
+        F.put(B.shadow(int(sp0.width * sc * 0.9)), x, y + 8)
     talking = S.speaker(t) == who
     mouth = "open" if S.mouth_open(who, t) else "smile"
     blink = ((t + hash(who) % 7 * 0.37) % 3.3) < 0.13
@@ -159,7 +173,8 @@ def draw_char(F, S, t, who, x, y, flip=False, sc=None):
     breathe = 1 + 0.015 * math.sin(t * 2.2 + hash(who) % 5)
     bob = abs(math.sin(t * 7)) * 8 * sc if talking else 0
     rot = math.sin(t * 3.5) * 2.5 if talking else math.sin(t * 1.2 + hash(who) % 3) * 0.8
-    F.put(B.char_sprite(who, mouth, blink, mood), x, y - bob, sc, rot=rot, flip=flip, anchor="b", sy=breathe,
+    cheer = mood == "cheer"
+    F.put(_sprite(who, mouth, blink, "happy" if cheer else mood, cheer)[0], x, y - bob, sc, rot=rot, flip=flip, anchor="b", sy=breathe,
           sx=2 - breathe)
 
 
@@ -177,8 +192,8 @@ def title_scene(ep_num, ep_title, lines, bg_fn):
         # Bunny waves from the bottom
         kb = back_out(prog(t, 2.2, 0.8), 1.6)
         mouth = "open" if S.mouth_open("bunny", t) else "smile"
-        F.put(B.rabbit("bunny", mouth, ((t % 3.1) < 0.12)), 1650, H + 40 + (1 - kb) * 500, 0.62, anchor="b",
-              rot=math.sin(t * 3) * 5)
+        sp, s3 = _sprite("bunny", mouth, ((t % 3.1) < 0.12), "happy")
+        F.put(sp, 1740, H + 40 + (1 - kb) * 500, s3 or 0.62, anchor="b", rot=math.sin(t * 3) * 5)
         confetti_burst(F, W / 2, 620, t, 1.8, 70, seed=ep_num)
         star_wipe(F, S, t, first=True)
         return F
@@ -202,8 +217,8 @@ def lesson_scene(text_card_txt, lines, bg_fn=None):
         kc = back_out(prog(t, 0.9, 0.7), 2.0)
         F.put(text_card(text_card_txt, 1300, 72, "#ffffff", "#5a3d7a", "#ff8fab"), W / 2, 470, sc=max(0.05, 0.6 + 0.4 * kc))
         mouth = "open" if S.mouth_open("narrateur", t) else "smile"
-        F.put(B.rabbit("bunny", mouth if False else "smile", ((t % 3.3) < 0.12)), W / 2, H - 10, 0.62, anchor="b",
-              rot=math.sin(t * 2) * 3)
+        sp, s3 = _sprite("bunny", "smile", ((t % 3.3) < 0.12), "happy", cheer=t > 1.5)
+        F.put(sp, W / 2, H - 10, (s3 or 0.62) * 0.85, anchor="b", rot=math.sin(t * 2) * 3)
         sparkle_burst(F, W / 2, 470, t, 1.2, 14, 640, seed=3)
         star_wipe(F, S, t)
         return F
@@ -221,8 +236,8 @@ def end_scene(lines, bg_fn):
         for i, who in enumerate(("noisette", "maman", "bunny", "papa", "pipo")):
             x = 360 + i * 300
             hop = abs(math.sin(t * 4 + i)) * 25
-            F.put(B.char_sprite(who, "smile", ((t + i) % 3.4) < 0.12), x, 1010 - hop, B.SIZES[who] * 0.9, anchor="b",
-                  rot=math.sin(t * 3 + i) * 4)
+            sp, s3 = _sprite(who, "smile", ((t + i) % 3.4) < 0.12, "happy", cheer=(int(t * 1.2 + i) % 3 == 0))
+            F.put(sp, x, 1010 - hop, (s3 or B.SIZES[who]) * 0.9, anchor="b", rot=math.sin(t * 3 + i) * 4)
         wavy_text(F, "À bientôt !", W / 2, 470, 120, t, 1.0, "#ffffff", "#4dabf7", 1500, 10)
         confetti_burst(F, W / 2, 500, t, 1.0, 80, seed=7)
         star_wipe(F, S, t, last=True)

@@ -389,9 +389,16 @@ def logo_card(size=1.0):
     p = Pen(1200, 420, 2)
     p.rect(20, 40, 1180, 400, 180, (255, 255, 255, 235), "#ff8fab", 10)
     img = p.done()
-    head = rabbit("bunny").crop((60, 0, 360, 400))
-    head = head.resize((int(head.width * 0.78), int(head.height * 0.78)), Image.LANCZOS)
-    img.alpha_composite(head, (40, 40))
+    if _os.path.exists(_os.path.join(_A3D, "bunny_idle.png")):
+        b3 = sprite3d("bunny", "idle")
+        head = b3.crop((0, 0, b3.width, int(b3.height * 0.62)))
+        k = 360 / head.height
+        head = head.resize((int(head.width * k), 360), Image.LANCZOS)
+        img.alpha_composite(head, (230 - head.width // 2, 40))
+    else:
+        head = rabbit("bunny").crop((60, 0, 360, 400))
+        head = head.resize((int(head.width * 0.78), int(head.height * 0.78)), Image.LANCZOS)
+        img.alpha_composite(head, (40, 40))
     t = Pen(1200, 420, 2)
     t.text((735, 168), "White", "Fredoka-Bold.ttf", 140, "#4dabf7", stroke=10, sfill="#ffffff")
     t.text((735, 310), "Bunny", "Fredoka-Bold.ttf", 150, "#ff8fab", stroke=10, sfill="#ffffff")
@@ -399,3 +406,66 @@ def logo_card(size=1.0):
     if size != 1.0:
         img = img.resize((int(1200 * size), int(420 * size)), Image.LANCZOS)
     return img
+
+
+# ------------------------------------------------------------------ 3D sprites (rendered with bunny3d.py)
+import os as _os
+_A3D = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "assets3d")
+_BOX = {}
+
+
+def _bbox3d(who):
+    if who not in _BOX:
+        box = None
+        for tag in ("idle", "talk", "blink", "sad", "sadtalk", "cheer"):
+            p = _os.path.join(_A3D, f"{who}_{tag}.png")
+            if _os.path.exists(p):
+                b = Image.open(p).split()[3].getbbox()
+                box = b if box is None else (min(box[0], b[0]), min(box[1], b[1]), max(box[2], b[2]), max(box[3], b[3]))
+        _BOX[who] = box
+    return _BOX[who]
+
+
+@lru_cache(None)
+def sprite3d(who, tag):
+    p = _os.path.join(_A3D, f"{who}_{tag}.png")
+    if not _os.path.exists(p):
+        p = _os.path.join(_A3D, f"{who}_idle.png")
+    return Image.open(p).convert("RGBA").crop(_bbox3d(who))
+
+
+def has3d(who):
+    return _os.path.exists(_os.path.join(_A3D, f"{who}_idle.png"))
+
+
+def char3d(who, mouth="smile", blink=False, mood="happy", cheer=False):
+    if cheer:
+        return sprite3d(who, "cheer")
+    if mood == "sad":
+        return sprite3d(who, "sadtalk" if mouth == "open" else "sad")
+    if mouth == "open":
+        return sprite3d(who, "talk")
+    return sprite3d(who, "blink" if blink else "idle")
+
+
+SCALE3D = 0.62  # same camera for every character, so one scale keeps relative sizes
+
+
+@lru_cache(None)
+def shadow(w):
+    p = Pen(int(w), int(w * 0.25), 2)
+    p.ell(w / 2, w * 0.125, w / 2 - 2, w * 0.11, (40, 60, 30, 70))
+    return p.done().filter(ImageFilter.GaussianBlur(6))
+
+
+@lru_cache(None)
+def bg3d(name):
+    return Image.open(_os.path.join(_A3D, f"set_{name}.png")).convert("RGB")
+
+
+@lru_cache(None)
+def prop3d(name, width):
+    p = _os.path.join(_A3D, f"prop_{name}.png")
+    im = Image.open(p).convert("RGBA")
+    im = im.crop(im.split()[3].getbbox())
+    return im.resize((int(width), int(im.height * width / im.width)), Image.LANCZOS)
