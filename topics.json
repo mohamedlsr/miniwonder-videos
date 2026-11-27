@@ -10,6 +10,16 @@
         "playlist": "animaux",
         "format": "exploration",
         "duration_s": 202
+      },
+      {
+        "date": "2026-11-27",
+        "slug": "eau",
+        "title": "Le cycle de l'eau pour enfants 💧 Pluie, nuage, neige + QUIZ | MiniWonder",
+        "youtube_id": "BZBo5Pqjj9s",
+        "script": "generator/ep02_eau.py",
+        "playlist": "nature",
+        "format": "aventure",
+        "duration_s": 470
       }
     ],
     "shorts": [
@@ -26,13 +36,6 @@
   },
   "ideas": {
     "videos": [
-      {
-        "slug": "eau",
-        "title": "Le voyage de la goutte d'eau (le cycle de l'eau)",
-        "note": "Contenu et dessins déjà écrits dans generator/ep2.py (ancien style) : le porter vers kit2 comme ep1b.py.",
-        "playlist": "nature",
-        "format": "aventure"
-      },
       {
         "slug": "systeme-solaire",
         "title": "Le système solaire : les planètes",
