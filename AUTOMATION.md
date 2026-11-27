@@ -69,6 +69,21 @@ Une accroche dans les 10 premières secondes et une annonce à mi-parcours (« E
 Durée visée : 35 à 55 s (maximum 58 s). Lancer avec `MW_VERTICAL=1`. Titre :
 `<Format> : <sujet> <emoji> #Shorts` (ex. « Vrai ou faux : le manchot 🐧 #Shorts », « 3 faits incroyables sur la tortue 🐢 #Shorts »).
 
+## 2 bis. Les animaux parlent (OBLIGATOIRE)
+
+Le propriétaire veut que **les animaux parlent** dans toutes les vidéos et tous les Shorts.
+- Chaque vidéo longue contient au moins **4 scènes de dialogue** faites avec `talk2(...)` (`generator/kit2.py`,
+  modèle : `generator/demo_talk.py`). Les animaux du sujet se présentent eux-mêmes, expliquent leurs particularités
+  à la première personne (« Moi, je… »), plaisantent entre eux et répondent aux questions de Mini.
+  Mini reste la présentatrice (lignes `("mini", "...")`) ; les autres lignes sont dites par l'animal (`("lion", "...")`).
+- Chaque animal a : un **prénom** et un nom affiché (« Léo le lion », « Ella l'éléphante ») ; une **voix**
+  (`VOICE` dans kit2 : `grave` gros animaux, `doux`/`moyen` moyens, `aigu` petits, `tres_aigu` minuscules, `lent` tortue, escargot…) ;
+  une couleur d'étiquette `tag`. Garder les mêmes prénoms quand un animal revient dans une autre vidéo
+  (noter les prénoms dans `topics.json` → `characters`).
+- Les faits dits par un animal sont vérifiés comme les autres ; un animal ne dit jamais rien d'effrayant (pas de chasse détaillée).
+- Shorts : au moins un animal parle (il dit lui-même ses 3 faits). Utiliser `talk2` avec `chips_x=W / 2`, `chips_y0=1300`,
+  et des positions adaptées au format vertical, ou bien l'animal qui parle dans `short_scene` via un acteur `talk2`.
+
 ## 3. Dessiner
 
 - Réutiliser ce qui existe dans `generator/art.py` (`star`, `elephant`, `giraffe`, `lion`, `zebra`, `drop`, `sun_body`,
@@ -76,7 +91,9 @@ Durée visée : 35 à 55 s (maximum 58 s). Lancer avec `MW_VERTICAL=1`. Titre :
   les décors de `engine.py` (`bg_savanna`, `bg_world`, `bg_garden`, `bg_sky`, `bg_quiz`, `bg_intro`).
 - Pour un nouveau sujet, dessiner de nouveaux personnages dans le même style avec `art.Pen` : formes rondes,
   contour `#3a2e2a`, grands yeux `art.eye(...)` avec un paramètre `blink`, joues roses `art.cheek(...)`,
-  fonctions décorées `@lru_cache(None)` qui acceptent `blink=False` (pour `dancer`/`hop_in`).
+  fonctions décorées `@lru_cache(None)` qui acceptent `blink=False, mouth_state="smile"` : la bouche se dessine avec
+  `art.mouth(p, x, y, r, mouth_state)` pour pouvoir parler (`"open"` / `"smile"`). Les animaux d'`art.py`
+  (`elephant`, `giraffe`, `lion`, `zebra`) parlent déjà : `art.lion(blink, mouth_state)`.
   Nouveaux décors : même méthode que `bg_savanna` (dégradé `vgrad` + `hills` + éléments).
 - Jamais de personnage, logo ou marque existants.
 - Avant le rendu complet : `python3 preview.py <module> <scène:fraction> ...` (ajouter `MW_VERTICAL=1` pour un Short)

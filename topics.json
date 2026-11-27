@@ -358,5 +358,13 @@
       "id": "PLLy1uWCsVkio",
       "title": "3 faits incroyables ⚡ Shorts | MiniWonder"
     }
+  },
+  "characters": {
+    "lion": "Léo le lion (voix grave)",
+    "elephant": "Ella l'éléphante (voix douce)",
+    "goutte": "Plic la goutte d'eau",
+    "nuage": "Cumulo le nuage",
+    "poisson": "Bulle le poisson",
+    "plante": "Pousse la plante"
   }
 }

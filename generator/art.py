@@ -168,6 +168,15 @@ def eye(p, x, y, r=13, look=(2, 0), closed=False):
     p.circ(x + r * 0.3 + look[0], y + r * 0.35, r * 0.15, "#ffffff")
 
 
+def mouth(p, x, y, r=14, state="smile", col="#3a2e2a"):
+    """Talking mouth: 'open' = open mouth with tongue, otherwise a small smile."""
+    if state == "open":
+        p.d.chord([(x - r) * p.k, (y - r * 0.5) * p.k, (x + r) * p.k, (y + r * 1.3) * p.k], 0, 180, fill=hexc("#6b2333"))
+        p.ell(x, y + r * 0.7, r * 0.55, r * 0.3, "#ff8fa3")
+    else:
+        p.arc(x, y, r * 0.9, r * 0.65, 20, 160, col, max(3, r * 0.25))
+
+
 def cheek(p, x, y, r=14):
     p.ell(x, y, r, r * 0.65, (255, 120, 140, 130))
 
@@ -221,7 +230,7 @@ OL = "#3a2e2a"
 
 
 @lru_cache(None)
-def elephant(blink=False):
+def elephant(blink=False, mouth_state="smile"):
     p = Pen(640, 500)
     g, gd = "#a3adb8", "#8a95a1"
     p.stroke([(95, 240), (70, 290), (66, 330)], gd, 12, 8, OL, 3)
@@ -246,11 +255,12 @@ def elephant(blink=False):
     p.ell(400, 205, 62, 82, "#e9b6bd")
     eye(p, 512, 168, 15, closed=blink)
     cheek(p, 540, 210, 13)
+    mouth(p, 490, 252, 16, mouth_state)
     return p.done()
 
 
 @lru_cache(None)
-def giraffe(blink=False):
+def giraffe(blink=False, mouth_state="smile"):
     w, h = 560, 780
     body = Pen(w, h)
     y, yo = "#f7c548", "#f0b234"
@@ -294,13 +304,13 @@ def giraffe(blink=False):
     p.circ(478, 138, 4, OL)
     eye(p, 410, 116, 14, closed=blink)
     cheek(p, 440, 152, 11)
-    p.arc(462, 160, 18, 10, 30, 150, OL, 3)
+    mouth(p, 458, 164, 14, mouth_state)
     base.alpha_composite(p.done())
     return base
 
 
 @lru_cache(None)
-def lion(blink=False):
+def lion(blink=False, mouth_state="smile"):
     p = Pen(640, 520)
     gold, goldd = "#eeae45", "#d9952f"
     tail = bezier((120, 290), (50, 300), (60, 190), (30, 170), 30)
@@ -325,8 +335,11 @@ def lion(blink=False):
     p.circ(cx, cy, 86, "#f4bd57", OL, 5)
     p.ell(cx, cy + 34, 48, 36, "#fde6b5")
     p.poly([(cx - 17, cy + 10), (cx + 17, cy + 10), (cx, cy + 28)], "#6b3412")
-    p.arc(cx - 12, cy + 36, 12, 10, 10, 170, OL, 4)
-    p.arc(cx + 12, cy + 36, 12, 10, 10, 170, OL, 4)
+    if mouth_state == "open":
+        mouth(p, cx, cy + 40, 18, "open")
+    else:
+        p.arc(cx - 12, cy + 36, 12, 10, 10, 170, OL, 4)
+        p.arc(cx + 12, cy + 36, 12, 10, 10, 170, OL, 4)
     eye(p, cx - 32, cy - 14, 15, closed=blink)
     eye(p, cx + 32, cy - 14, 15, closed=blink)
     cheek(p, cx - 58, cy + 22, 13)
@@ -335,7 +348,7 @@ def lion(blink=False):
 
 
 @lru_cache(None)
-def zebra(blink=False):
+def zebra(blink=False, mouth_state="smile"):
     w, h = 600, 520
     base = Pen(w, h)
     mask = Pen(w, h)
@@ -371,6 +384,7 @@ def zebra(blink=False):
         p.ell(x - 10, y - 4, 14, 18, "#222")
     p.poly(rot_ell(518, 244, 36, 30, -35), "#3c3c44")
     p.circ(525, 236, 4, "#ddd")
+    mouth(p, 500, 270, 15, mouth_state, "#dddddd")
     p.poly(rot_ell(430, 92, 12, 26, -20), wh, OL, 4)
     eye(p, 478, 168, 13, closed=blink)
     cheek(p, 500, 205, 10)

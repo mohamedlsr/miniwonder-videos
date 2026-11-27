@@ -3,6 +3,7 @@ import math, random
 from functools import lru_cache
 from PIL import Image, ImageDraw
 from engine import *
+from engine import _resample
 import art
 import music2
 from music2 import BEAT
@@ -490,3 +491,153 @@ def make_thumbnail(path, bg_img, title, sprites, title_ol="#e8590c"):
     F.put(label("+ QUIZ", 70, "#ff6b81"), 1700, 120, rot=8)
     F.img.convert("RGB").resize((1280, 720), Image.LANCZOS).save(path, quality=90)
     return path
+
+
+# ------------------------------------------------------------------ talking animals
+# Voice presets for characters (speed, pitch). One French voice, shaped per character.
+VOICE = {
+    "mini": (SPEED, PITCH),
+    "grave": (1.12, 0.84),      # big animals: elephant, bear, whale...
+    "moyen": (1.05, 1.0),
+    "doux": (1.08, 1.1),
+    "aigu": (0.96, 1.25),       # small animals: rabbit, bird...
+    "tres_aigu": (0.92, 1.38),  # tiny: mouse, bee, ant...
+    "lent": (1.3, 0.9),         # turtle, sloth, snail
+}
+
+
+class DialogScene(Scene):
+    """MiniWonder scene where animals talk. lines: (who, text) | pause seconds. who = 'mini' or a cast key.
+    cast: {key: dict(fn=sprite_fn(blink, mouth_state), x, y, sc=1.0, flip=False, voice='moyen', name='Léo le lion',
+                     enter=None or (t0_or_cue_index_str, from_x, duration))}"""
+
+    def __init__(self, title, lines, bg_fn, cast, chip_items=(), fact=None, extras=None, lab_bg="#ff6b81",
+                 mini_pos=(W - 160, H - 140), fact_cx=1270, chips_x=1400, chips_y0=330, last=False, sfx=None):
+        super().__init__([], None, lead=0.8, tail=1.0, gap=0.35, sfx=sfx)
+        self.title, self.dlines, self.bg_fn, self.cast = title, lines, bg_fn, cast
+        self.chip_items, self.fact, self.extras, self.lab_bg = chip_items, fact, extras, lab_bg
+        self.mini_pos, self.fact_cx, self.chips_x, self.chips_y0, self.last = mini_pos, fact_cx, chips_x, chips_y0, last
+        self.draw = DialogScene._draw
+        self.user_sfx = sfx
+
+    def build(self):
+        import tts as _tts
+        t = self.lead
+        segs, cues, subs, who_l = [], [], [], []
+        for item in self.dlines:
+            if isinstance(item, (int, float)):
+                t += item
+                continue
+            who, text = item[0], item[1]
+            v = "mini" if who == "mini" else self.cast[who].get("voice", "moyen")
+            sp, pi = VOICE[v] if isinstance(v, str) else v
+            a = _tts.say(text, sp, pi)
+            cues.append(t)
+            d = len(a) / _tts.SR
+            segs.append((t, a))
+            subs.append((t, t + d, text))
+            who_l.append(who)
+            t += d + self.gap
+        self.nframes = int(round((t - self.gap + self.tail) * FPS))
+        self.dur = self.nframes / FPS
+        self.cues, self.subs, self.who = cues, subs, who_l
+        self.ends = [s[1] for s in subs]
+        n = int(self.dur * AR)
+        v = np.zeros(n, np.float32)
+        for t0, a in segs:
+            r = _resample(a, _tts.SR, AR)
+            i0 = int(t0 * AR)
+            v[i0:i0 + len(r)] += r[:max(0, n - i0)]
+        self.voice = v
+        hop = AR // FPS
+        self.env = [float(np.sqrt(np.mean(v[i * hop:(i + 1) * hop] ** 2))) for i in range(self.nframes)]
+        ev = [("whoosh", 0.0), ("boing", WIPE * 0.6 + 0.15)]
+        for ci, _, _ in self.chip_items:
+            ev += [("pop", self.cue(ci) - 0.1), ("sparkle", self.cue(ci) - 0.05)]
+        if self.fact:
+            ev.append(("chime", self.cue(self.fact[0]) - 0.25))
+        for k, c in self.cast.items():
+            if c.get("enter"):
+                ev.append(("boing", self._enter_t(c) + c["enter"][2] - 0.1))
+        if self.user_sfx:
+            ev += self.user_sfx(self)
+        self.sfx = ev
+        return self
+
+    def _enter_t(self, c):
+        t0 = c["enter"][0]
+        return self.cue(int(t0[1:])) - 1.2 if isinstance(t0, str) else t0
+
+    def speaker(self, t):
+        for i, (a, b, _) in enumerate(self.subs):
+            if a <= t <= b:
+                return self.who[i]
+        return None
+
+    def mouth_open(self, who, t):
+        if self.speaker(t) != who:
+            return False
+        i = int(t * FPS)
+        return 0 <= i < len(self.env) and self.env[i] > 0.035 and (i // 3) % 2 == 0
+
+    def talking(self, t):  # used by mini2()
+        return self.mouth_open("mini", t)
+
+    @staticmethod
+    def _draw(S, t):
+        world = Frame(S.bg_fn())
+        if S.extras:
+            S.extras(world, S, t)
+        spk = S.speaker(t)
+        for key, c in sorted(S.cast.items(), key=lambda kv: kv[1]["y"]):
+            x, y, sc = c["x"], c["y"], c.get("sc", 1.0)
+            if c.get("enter"):
+                t0 = S._enter_t(c)
+                x0, d = c["enter"][1], c["enter"][2]
+                if t < t0:
+                    continue
+                k = prog(t, t0, d)
+                if k < 1:
+                    e = ease_in_out(k)
+                    jump = abs(math.sin(math.pi * 3 * k)) * 80 * sc
+                    world.put(c["fn"](False, "smile"), x0 + (x - x0) * e, y - jump, sc, anchor="b",
+                              flip=c.get("flip", False))
+                    continue
+            talking = spk == key
+            sx, sy, rot, hop = dance_params(S, t, 0.35, (hash(key) % 7) * 0.13)
+            if talking:
+                hop += abs(math.sin(t * 8)) * 10
+                rot += math.sin(t * 4) * 2
+            sp = c["fn"](blinking(t, hash(key) % 9), "open" if S.mouth_open(key, t) else "smile")
+            world.put(sp, x, y - hop, sc, rot=rot, flip=c.get("flip", False), anchor="b", sx=sx, sy=sy)
+        F = Frame.__new__(Frame)
+        F.img = camera(world.img, S, t, 0.04, 14)
+        # name tag of the animal that is speaking
+        if spk and spk != "mini" and S.cast[spk].get("name"):
+            c = S.cast[spk]
+            i = S.who.index(spk) if spk in S.who else 0
+            first = min(j for j, w in enumerate(S.who) if w == spk)
+            k = back_out(prog(t, S.cue(first), 0.4), 2.0)
+            F.put(label(c["name"], 44, c.get("tag", "#4dabf7")), c["x"], c["y"] + 40 if c["y"] < H - 80 else H - 60,
+                  sc=max(0.05, k))
+        hide = ease_in_out(prog(t, S.cue(S.fact[0]) - 0.3, 0.35)) if S.fact else 0
+        for n, (ci, txt, col) in enumerate(S.chip_items):
+            pop_label(F, S, t, txt, S.chips_x, S.chips_y0 + n * 150, S.cue(ci) - 0.1, 54, col, out=hide)
+        if S.fact:
+            t0 = S.cue(S.fact[0]) - 0.25
+            if t > t0:
+                k = back_out(prog(t, t0, 0.6), 2.0)
+                F.put(fact_card(S.fact[1], 1040), S.fact_cx, 520 + (1 - k) * 700,
+                      rot=math.sin((t - t0) * 10) * 4 * math.exp(-(t - t0) * 2.5))
+        lb = label(S.title, 72, S.lab_bg)
+        k = back_out(prog(t, WIPE * 0.6, 0.6), 2.0)
+        F.put(lb, 60 + lb.width / 2, 50 + lb.height / 2 - (1 - k) * 260, rot=math.sin(t * 2.2) * 1.5)
+        if S.mini_pos:
+            k2 = back_out(prog(t, 0.3, 0.6))
+            mini2(F, S, t, S.mini_pos[0], S.mini_pos[1] + (1 - k2) * 320, 220)
+        star_wipe(F, S, t, last=S.last)
+        return F
+
+
+def talk2(*a, **k):
+    return DialogScene(*a, **k)

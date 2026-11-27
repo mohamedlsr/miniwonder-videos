@@ -46,6 +46,11 @@ Quand c'est possible, le Short reprend le sujet d'une vidéo longue publiée et 
 - Varier les phrases d'intro et de fin (ne jamais réutiliser mot pour mot celles d'une vidéo précédente).
 - Mini reste la présentatrice : c'est l'identité de la chaîne.
 
+### 3 bis. Les animaux parlent
+Depuis le 27/11/2026, demande du propriétaire : dans chaque vidéo et chaque Short, les animaux parlent avec leur propre
+voix, se présentent et expliquent eux-mêmes ce qui les rend spéciaux, en dialogue avec Mini. Ils ont un prénom et
+reviennent d'une vidéo à l'autre (personnages récurrents = les enfants s'y attachent et regardent plus longtemps).
+
 ### 4. Être trouvé (référencement)
 - Titre : commence par ce que les parents cherchent (« Les planètes pour enfants », « Pourquoi le ciel est bleu ? »),
   puis un emoji, puis 2 ou 3 mots-clés, puis « | MiniWonder ». Idéalement moins de 70 caractères.
@@ -67,4 +72,5 @@ et soumettre la chaîne. YouTube examine ensuite la chaîne (environ un mois).
 
 ## Ce qu'on a appris (mis à jour chaque dimanche)
 
+- 27/11/2026 : les animaux parlent désormais (dialogues, voix et prénoms par animal).
 - 26/11/2026 : lancement. 1 vidéo (savane, 3 min 22) et 1 Short (girafe) publiés.
