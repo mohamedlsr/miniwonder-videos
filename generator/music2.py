@@ -96,7 +96,7 @@ MEL_B = [
 STYLES = {0: (0, 0), 1: (2, 1), 2: (5, 0), 3: (-3, 1)}  # style -> (transpose, melody-section swap)
 
 
-def track(dur, transpose=0, quiet=(), style=None):
+def track(dur, transpose=0, quiet=(), style=None, soft=False):
     """quiet: list of (t0,t1) where drums/lead drop for suspense (quiz countdowns)."""
     swap = 0
     if style is not None:
@@ -165,7 +165,10 @@ def track(dur, transpose=0, quiet=(), style=None):
                 add(mel, lead(m + transpose, d * BEAT, 0.17 if section == 0 else 0.12), t + pos * BEAT)
         t += 4 * BEAT
         bar += 1
-    out = (drums * 0.9 + bass * 0.9 + keys + mel)[:int(dur * AR)]
+    if soft:  # storybook mode: no drums, gentle bass and bells
+        out = (drums * 0.0 + bass * 0.45 + keys * 1.2 + mel * 0.6)[:int(dur * AR)]
+    else:
+        out = (drums * 0.9 + bass * 0.9 + keys + mel)[:int(dur * AR)]
     out /= np.abs(out).max() + 1e-6
     fi = int(0.3 * AR)
     out[:fi] *= np.linspace(0, 1, fi)
